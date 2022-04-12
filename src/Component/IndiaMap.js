@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useCallback} from "react";
+import { useHistory } from "react-router";
 import {ComposableMap, Geographies, Geography} from 'react-simple-maps';
 import {scaleQuantile} from 'd3-scale';
 import ReactTooltip from 'react-tooltip';
@@ -8,6 +9,7 @@ import LinearGradient from './LinearGradient.js';
 import '../App.css';
 import {withRouter} from "react-router-dom";
 import LandingPage from "./LandingPage.js";
+import GenerateCharts from "./GenerateCharts.js";
 
 const INDIA_TOPO_JSON = require('../Utility/india.topo.json');
 
@@ -93,102 +95,18 @@ const getHeatMapData = () => {
         {id: 'PY', state: 'Puducherry', value: getRandomInt()}
     ];
 };
-/*
-tableRowStatesHandleClick(event) {
-    if(this.state.viewType=='pie') return;
-    const id = event.target.id;
-    let presentStates = this.state.statesForLineChart;
-    if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
-    else {
-        if (presentStates.length === 3) presentStates.shift();
-        presentStates.push(id);
-    }
-    this.setState({
-        statesForLineChart: presentStates
-    }, () => this.createChart())
-}
 
-        let content = this.state.dataset.result.map(
-            (details, index) =>
-
-                <tr key={index}>
-                    <td
-                        style={{
-                            backgroundColor:
-                                this.state.statesForLineChart.includes(details.StateName)
-                                && this.state.viewType === "line"? "#1e621c" : "#009879",
-                            color: "#ffffff"
-                        }}
-                        onClick={this.tableRowStatesHandleClick}////////////
-                        id={details.StateName}
-                    >
-                        {details.StateName}</td>
-                    {this.state.years.map(
-                        (year, index1) =>
-                            <td key={index1}><input placeholder={details[year]} defaultValue={details[year]} style={{border: 'none',background:'transparent'}}/></td>
-                    )}
-                </tr>
-        )
-
- tableRowStatesHandleClick(event) {
-     const id = event.target.id;
-     let presentStates = this.state.cropStatesForLineChart;
-     if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
-     else {
-         if (presentStates.length === 9) presentStates.shift();
-         presentStates.push(id);
-     }
-     this.setState({
-         cropStatesForLineChart: presentStates
-     })
- }
-
-
-
-*/
- //p
-//  mapStateSelector(event) {
-//      const id = event.target.id;
-//      let presentStates = this.state.cropStatesForLineChart;
-//      if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
-//      else {
-//          if (presentStates.length === 9) presentStates.shift();
-//          presentStates.push(id);
-//      }
-//      this.setState({
-//          cropStatesForLineChart: presentStates
-//      })
-//  }
-//p
-
-// const handleClick = (geo) => {
-//     console.log("STATE: ",geo.id);
-//     // <LandingPage selectedState={geo.id}/>
-//     // setClickedCity(geo.properties.name);
-//     // dispatcher(getState({ value: geo.properties.name }));
-
-//     // });
-//   };
 
 function IndiaMap({...rest}) {
 
-
-    const [state, setstate] = useState({data: 0})
-  
-
-    // const func = (geo) => 
-    // {
-    //     console.log(geo.id);
-    // }
+    const history = useHistory();
     const changeState = (geo) => {  
-        // var k=2;
-        // <LandingPage pl={2}/>
-        // setstate({data:`state/props of parent component 
-        // is send by onClick event to another component`}); 
-        setstate({data: geo.id}); 
-        console.log("STATE: ",geo.id)
+
+        history.push("/",{mapStates:geo.properties.name});
+
+        // console.log("STATE: ",geo.properties.name)
     
-    }; 
+    }
     const [tooltipContent, setTooltipContent] = useState('');
     const [data, setData] = useState(getHeatMapData());
 
@@ -209,8 +127,6 @@ function IndiaMap({...rest}) {
         
         <div className="full-width-height container">
 
-                
-                
 
             <h1 className="no-margin center">States and UTs</h1>
 
@@ -236,8 +152,6 @@ function IndiaMap({...rest}) {
                                     key={geo.rsmKey}
                                     geography={geo}
                                     onClick={() => changeState(geo)}
-                                    // onClick={console.log("YO ",geo.id)}
-                                    // onClick={changeState(geo)}
                                     fill={current ? colorScale(current.value) : DEFAULT_COLOR}
                                     style={geographyStyle}
                                 />
@@ -252,7 +166,7 @@ function IndiaMap({...rest}) {
             <div className="center">
                 <button className="mt16">Change</button>
             </div>
-            <LandingPage data={state.data}/>
+            
 
         </div>
     );

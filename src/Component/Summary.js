@@ -46,9 +46,10 @@ class Summary extends Component {
     processData() {
         let givenYears = []
 
-        for (let key in this.state.rainfall.result[0]) {
+        for (let key in this.state.rainfall.result[0]) {/////
             if (key !== 'StateName' && key !== '_id') {
                 givenYears.push(key)
+                console.log(key);
             }
         }
 
@@ -76,6 +77,7 @@ class Summary extends Component {
 
     tableRowStatesHandleClick(event) {
         const id = event.target.id;
+        console.log(event.target.id);
         let presentStates = this.state.statesForLineChart;
         if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
         else {
@@ -106,7 +108,7 @@ class Summary extends Component {
                     id={year}
                 >{year}</th>
         )
-
+///////////////////////////////////////////////////////////////////////TODO
         let content = this.state.rainfall.result.map(
             (details, index) =>
                 <tr key={index}>
@@ -127,7 +129,7 @@ class Summary extends Component {
                     )}
                 </tr>
         )
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
         return (
             <div className="SummaryLineChart">
                 <h2 style={{marginBottom: "1%"}}>Summary</h2>

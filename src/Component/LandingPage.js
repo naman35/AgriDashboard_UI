@@ -16,20 +16,27 @@ class LandingPage extends Component {
             isLoading: true,
             requestedType: "Kharif-Crop",
             viewType: "pie",
+            // mapStates: this.props,
             sideBarView:true
         }
-
         this.preProcessAndLoadTheData = this.preProcessAndLoadTheData.bind(this)
         this.handleClickForProductType = this.handleClickForProductType.bind(this)
         this.handleClickForToggleView = this.handleClickForToggleView.bind(this)
         this.handleSideBarForPopUp = this.handleSideBarForPopUp.bind(this)
-    }
+   
+
+
+    // moveToGenChart = () => { 
+    //     setstate({statesToList: this.props.location.state.mapStates})
+
+    // }
+    }   
 
     async componentDidMount() {
-
         this.setState({
             apis: await require('./Apis.json')
         }, () => this.preProcessAndLoadTheData())
+
     }
 
     async preProcessAndLoadTheData() {
@@ -67,6 +74,7 @@ class LandingPage extends Component {
 
     async handleClickForProductType(event) {
         const id = event.target.id
+        console.log("this ",id);
         const url = this.state.apis[id]
         let receivedResponse = {}
 
@@ -91,11 +99,26 @@ class LandingPage extends Component {
         })
     }
 
+    tableRowStatesHandleClick(event) {
+        const id = event.target.id;
+        console.log(id);
+
+        let presentStates = this.state.statesForLineChart;
+        if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
+        else {
+            if (presentStates.length === 3) presentStates.shift();
+            presentStates.push(id);
+        }
+        this.setState({
+            statesForLineChart: presentStates
+        }, () => this.createChart())
+    }
     handleClickForToggleView(event) {
         const id = event.target.id
-
+        console.log(id);
         this.setState({
             viewType: id
+    
         })
     }
 
@@ -108,9 +131,9 @@ class LandingPage extends Component {
     }
 
     render() {
-        // const { selectedState } = this.props.location
-        {console.log(this.props.data)}
-        // console.log("SATE SELECTED IS:",selectedState)
+            /* <LandingPage changeState={state}/> */
+            console.log(this.props.location.state.mapStates)
+        
         if (this.state.isLoading) {
             
             return (
@@ -138,6 +161,7 @@ class LandingPage extends Component {
                     />:""}
 
                 <GenerateCharts
+                    moveToGenChart= {this.props.location.state.mapStates}
                     dataset={this.state.request}
                     name={this.state.requestedType}
                     viewType={this.state.viewType}

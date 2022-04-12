@@ -13,7 +13,7 @@
         {
           "type": "MultiPolygon",
           "id": "AN",
-          "properties": { "name": "Andaman & Nicobar Island" },
+          "properties": { "name": "A & N Islands" },
           "arcs": [
             [[0]],
             [[1]],
@@ -172,7 +172,7 @@
         {
           "type": "Polygon",
           "id": "DN",
-          "properties": { "name": "Dadara & Nagar Havelli" },
+          "properties": { "name": "D & N Havelli" },
           "arcs": [[114, 115]]
         },
         {

@@ -63,7 +63,9 @@ class GenerateCharts extends Component {
         }
 
         statesForLineChart.push(this.state.dataset.result[0].StateName)
-        // console.log(this.state.dataset.result[1].StateName)
+        console.log("OLA",this.props.moveToGenChart)
+        statesForLineChart.push(this.props.moveToGenChart)
+        // console.log(this.state.dataset.result[2].StateName)
 
         this.setState({
                 isLoading: false,
@@ -241,10 +243,12 @@ class GenerateCharts extends Component {
             yearsForPieChart: presentYears
         }, () => this.createChart())
     }
-
+//////////////////////////HERE
     tableRowStatesHandleClick(event) {
         if(this.state.viewType=='pie') return;
         const id = event.target.id;
+        // console.log(this.props.mapStates);
+
         let presentStates = this.state.statesForLineChart;
         if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
         else {
@@ -257,7 +261,8 @@ class GenerateCharts extends Component {
     }
 
     render() {
-
+        // {console.log("FROM MAP",this.props.mapStates)}
+        console.log("Gen",this)
         if (this.state.isLoading) {
             return (
                 <div/>
@@ -276,7 +281,7 @@ class GenerateCharts extends Component {
                     id={year}
                 >{year}</th>
         )
-///////////////////////////////////////////////////////////
+
 
         let content = this.state.dataset.result.map(
             (details, index) =>

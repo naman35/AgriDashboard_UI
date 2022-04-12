@@ -98,11 +98,15 @@ const getHeatMapData = () => {
 
 
 function IndiaMap({...rest}) {
-
+    // const mapStates=[]
     const history = useHistory();
     const changeState = (geo) => {  
 
-        history.push("/",{mapStates:geo.properties.name});
+        history.push({
+            pathname: "/",
+            state: {mapStates: geo.properties.name}
+            
+            });
 
         // console.log("STATE: ",geo.properties.name)
     

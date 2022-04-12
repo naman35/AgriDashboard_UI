@@ -15,21 +15,18 @@ class LandingPage extends Component {
             types: [],
             isLoading: true,
             requestedType: "Kharif-Crop",
-            viewType: "pie",
-            // mapStates: this.props,
+            viewType: "pie",    
+            mapStates: this.props.location.state.mapStates,
             sideBarView:true
         }
         this.preProcessAndLoadTheData = this.preProcessAndLoadTheData.bind(this)
         this.handleClickForProductType = this.handleClickForProductType.bind(this)
         this.handleClickForToggleView = this.handleClickForToggleView.bind(this)
         this.handleSideBarForPopUp = this.handleSideBarForPopUp.bind(this)
-   
+        this.sendData="DDDDDDDDDDDDDDDDDDDDD";
 
+    
 
-    // moveToGenChart = () => { 
-    //     setstate({statesToList: this.props.location.state.mapStates})
-
-    // }
     }   
 
     async componentDidMount() {
@@ -132,7 +129,11 @@ class LandingPage extends Component {
 
     render() {
             /* <LandingPage changeState={state}/> */
-            console.log(this.props.location.state.mapStates)
+        console.log(this)
+        if(this.props.location.state.mapStates!==undefined)
+        {
+            this.sendData=this.props.location.state.mapStates;
+        }
         
         if (this.state.isLoading) {
             
@@ -147,7 +148,7 @@ class LandingPage extends Component {
             
             <div className="LandingPage">
 
-                {/* {console.log(this.props.data) } */}
+                {console.log(this.props) }
                 <NavBar
                     toggleViewHandler={this.handleClickForToggleView}
                     // onClick={() =>   console.log(selectedState)}                    
@@ -161,7 +162,7 @@ class LandingPage extends Component {
                     />:""}
 
                 <GenerateCharts
-                    moveToGenChart= {this.props.location.state.mapStates}
+                    moveToGenChart= {this.sendData}
                     dataset={this.state.request}
                     name={this.state.requestedType}
                     viewType={this.state.viewType}

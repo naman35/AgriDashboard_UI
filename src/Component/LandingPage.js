@@ -16,14 +16,13 @@ class LandingPage extends Component {
             isLoading: true,
             requestedType: "Kharif-Crop",
             viewType: "pie",    
-            mapStates: this.props.location.state.mapStates,
+            sendData: " ",
             sideBarView:true
         }
         this.preProcessAndLoadTheData = this.preProcessAndLoadTheData.bind(this)
         this.handleClickForProductType = this.handleClickForProductType.bind(this)
         this.handleClickForToggleView = this.handleClickForToggleView.bind(this)
         this.handleSideBarForPopUp = this.handleSideBarForPopUp.bind(this)
-        this.sendData="DDDDDDDDDDDDDDDDDDDDD";
 
     
 
@@ -130,9 +129,9 @@ class LandingPage extends Component {
     render() {
             /* <LandingPage changeState={state}/> */
         console.log(this)
-        if(this.props.location.state.mapStates!==undefined)
+        if(this.props.location.state!==undefined)
         {
-            this.sendData=this.props.location.state.mapStates;
+            this.state.sendData=this.props.location.state.mapStates;
         }
         
         if (this.state.isLoading) {
@@ -148,7 +147,7 @@ class LandingPage extends Component {
             
             <div className="LandingPage">
 
-                {console.log(this.props) }
+                {console.log("R",this) }
                 <NavBar
                     toggleViewHandler={this.handleClickForToggleView}
                     // onClick={() =>   console.log(selectedState)}                    
@@ -162,7 +161,7 @@ class LandingPage extends Component {
                     />:""}
 
                 <GenerateCharts
-                    moveToGenChart= {this.sendData}
+                    moveToGenChart= {this.state.sendData}
                     dataset={this.state.request}
                     name={this.state.requestedType}
                     viewType={this.state.viewType}

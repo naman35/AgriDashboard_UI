@@ -98,17 +98,17 @@ const getHeatMapData = () => {
 
 
 function IndiaMap({...rest}) {
-    // const mapStates=[]
+    const [mapStates,addI]=useState([]);
     const history = useHistory();
-    const changeState = (geo) => {  
-
+    var changeState = (geo) => {  
+        console.log("IndiaMap",mapStates)
+        if (mapStates.length === 3) mapStates.shift();
+        mapStates.push(geo.properties.name)
         history.push({
             pathname: "/",
-            state: {mapStates: geo.properties.name}
+            state: {mapStates}
             
             });
-
-        // console.log("STATE: ",geo.properties.name)
     
     }
     const [tooltipContent, setTooltipContent] = useState('');
@@ -155,7 +155,7 @@ function IndiaMap({...rest}) {
                             
                                     key={geo.rsmKey}
                                     geography={geo}
-                                    onClick={() => changeState(geo)}
+                                    onClick={() =>  addI([...mapStates,changeState(geo)])}
                                     fill={current ? colorScale(current.value) : DEFAULT_COLOR}
                                     style={geographyStyle}
                                 />
@@ -170,7 +170,9 @@ function IndiaMap({...rest}) {
             <div className="center">
                 <button className="mt16">Change</button>
             </div>
-            
+            <div className="center">
+                <button className="mt16">Submit</button>
+            </div>           
 
         </div>
     );

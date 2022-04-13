@@ -64,11 +64,11 @@ class GenerateCharts extends Component {
 
         // statesForLineChart.push(this.state.dataset.result[0].StateName)
         console.log("OLA",this.props.moveToGenChart)
-        statesForLineChart.push(this.props.moveToGenChart)
+        // statesForLineChart.push(this.props.moveToGenChart)
         // console.log(this.state.dataset.result[2].StateName)
-        // for (var i = 0; i < this.props.moveToGenChart.length; i++) {
-        //     statesForLineChart.push(this.props.moveToGenChart[i])
-        // }
+        for (var i = 0; i < this.props.moveToGenChart.length; i++) {
+            statesForLineChart.push(this.props.moveToGenChart[i])
+        }
 
         this.setState({
                 isLoading: false,

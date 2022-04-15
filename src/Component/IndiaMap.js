@@ -43,12 +43,11 @@ const geographyStyle = {
     },
     hover: {
         fill: '#ccc',
-        transition: 'all 250ms',
         outline: 'none'
     },
     pressed: {
         outline: 'none',
-        fill: '#960505'
+        fill: '#960505',
     }
 };
 
@@ -98,19 +97,32 @@ const getHeatMapData = () => {
 
 
 function IndiaMap({...rest}) {
-    const [mapStates,addI]=useState([]);
+    // const [mapStates,addI]=useState([]);
+    var mapStates="";
     const history = useHistory();
+    // const {handlePopUpF} = rest;
+    const prevTrigger=false;
     var changeState = (geo) => {  
-        console.log("IndiaMap",mapStates)
-        if (mapStates.length === 3) mapStates.shift();
-        mapStates.push(geo.properties.name)
-        history.push({
+
+        // console.log("IndiaMap",mapStates)
+        // if (mapStates.length === 3) mapStates.shift();
+        // var mapStates=geo.properties.name
+        // mapStates.push(geo.properties.name);
+        
+        if(rest.callTrigger==true)
+        {
+            history.push({
             pathname: "/",
-            state: {mapStates}
+            state: {mapStates:geo.properties.name}
             
             });
+        }
     
     }
+    console.log("we here",rest.callTrigger);
+
+    // prevTrigger = rest.callTrigger
+   
     const [tooltipContent, setTooltipContent] = useState('');
     const [data, setData] = useState(getHeatMapData());
 
@@ -126,6 +138,17 @@ function IndiaMap({...rest}) {
     const colorScale = scaleQuantile()
         .domain(data.map(d => d.value))
         .range(COLOR_RANGE);
+
+
+    var submitPush = () => {
+        // handlePopUpF();
+        history.push({
+            pathname: "/",
+            state: {mapStates}
+            
+            });
+        
+    }  
 
     return (
         
@@ -155,7 +178,7 @@ function IndiaMap({...rest}) {
                             
                                     key={geo.rsmKey}
                                     geography={geo}
-                                    onClick={() =>  addI([...mapStates,changeState(geo)])}
+                                    onClick={() => changeState(geo)}
                                     fill={current ? colorScale(current.value) : DEFAULT_COLOR}
                                     style={geographyStyle}
                                 />
@@ -169,10 +192,7 @@ function IndiaMap({...rest}) {
             <LinearGradient data={gradientData}/>
             <div className="center">
                 <button className="mt16">Change</button>
-            </div>
-            <div className="center">
-                <button className="mt16">Submit</button>
-            </div>           
+            </div>     
 
         </div>
     );

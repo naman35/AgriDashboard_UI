@@ -62,13 +62,22 @@ class GenerateCharts extends Component {
             }
         }
 
-        // statesForLineChart.push(this.state.dataset.result[0].StateName)
-        console.log("OLA",this.props.moveToGenChart)
+
+        console.log("curretn States",this.props.moveToGenChart)
         // statesForLineChart.push(this.props.moveToGenChart)
         // console.log(this.state.dataset.result[2].StateName)
-        for (var i = 0; i < this.props.moveToGenChart.length; i++) {
-            statesForLineChart.push(this.props.moveToGenChart[i])
-        }
+        // if(this.props.moveToGenChart.length <=3)
+        // {
+        //    if(this.props.moveToGenChart.size<=3)
+        //    {
+                this.props.moveToGenChart.forEach(element => {
+                    if (statesForLineChart.length == 3) 
+                    {
+                        this.props.moveToGenChart.clear();
+                    }
+                statesForLineChart.push(element);
+              });
+            // }
 
         this.setState({
                 isLoading: false,
@@ -265,7 +274,6 @@ class GenerateCharts extends Component {
 
     render() {
         // {console.log("FROM MAP",this.props.mapStates)}
-        console.log("Gen",this)
         if (this.state.isLoading) {
             return (
                 <div/>

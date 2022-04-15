@@ -16,7 +16,7 @@ class LandingPage extends Component {
             isLoading: true,
             requestedType: "Kharif-Crop",
             viewType: "pie",    
-            sendData: " ",
+            sendData: new Set(),
             sideBarView:true
         }
         this.preProcessAndLoadTheData = this.preProcessAndLoadTheData.bind(this)
@@ -128,10 +128,10 @@ class LandingPage extends Component {
 
     render() {
             /* <LandingPage changeState={state}/> */
-        console.log(this)
+        // console.log(this)
         if(this.props.location.state!==undefined)
         {
-            this.state.sendData=this.props.location.state.mapStates;
+            this.state.sendData.add(this.props.location.state.mapStates);
         }
         
         if (this.state.isLoading) {

@@ -48,15 +48,28 @@ class NavBar extends Component {
     }
 
     handlePopUp() {
-        //console.log("called")
-        console.log(this.state.popUpTrigger);
+        //console.log("called"));
         const prevTrigger = this.state.popUpTrigger;
         this.setState(prevState => ({
             ...prevState,
             popUpTrigger: !prevTrigger
         }))
+
         this.state.sideBarHandler();
     }
+    handlePopUpF=()=> {
+        console.log("calleddddddddddddddd")
+        console.log("OPEN",this.state.popUpTrigger);
+        const prevTrigger = this.state.popUpTrigger;
+
+        this.setState(prevState => ({
+            ...prevState,
+            popUpTrigger: !prevTrigger,
+            registerPopUpTrigger: false          
+        }))
+        this.state.sideBarHandler();
+    }
+
 
     handlerRegisterPopUp(){
         console.log(this.state.registerPopUpTrigger);
@@ -123,11 +136,10 @@ class NavBar extends Component {
                                 {/*<Link to="/IndiaMap" target="_blank"><img style={{paddingLeft: "15px"}} src={e3}*/}
                                 {/*                                          alt=""/></Link>*/}
                                 <figure>
-                                <button style={{ border: "0px" }} onClick={this.handlePopUp}>
+                                <button style={{ border: "20px" }} onClick={this.handlePopUp}>
                                     <img style={{ paddingLeft: "15px" }} src={e3} alt="" />
                                 </button>
-                                <IndiaMapPopup trigger={this.state.popUpTrigger}
-                                    sideBarHandler={this.state.sideBarHandler}>
+                                <IndiaMapPopup trigger={this.state.popUpTrigger}>
                                 </IndiaMapPopup></figure>
 
                             </li>
@@ -136,9 +148,10 @@ class NavBar extends Component {
                                 <button style={{ border: "0px" }} onClick={this.handlerRegisterPopUp}>
                                     <img style={{ paddingLeft: "15px" }} src={e4} alt="" />
                                 </button>
-                                    <Popup trigger={this.state.registerPopUpTrigger} sideBarHandler={this.state.sideBarHandler}>
-                                    </Popup></figure>
-                               
+                                    <Popup trigger={this.state.registerPopUpTrigger}>
+                                    </Popup>
+                                    </figure>
+                                    
                             </li>
                         </ul>
                     </label>

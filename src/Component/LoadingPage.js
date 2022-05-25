@@ -16,10 +16,10 @@ class LoadingPage extends Component {
 
                     text='Loading...'
                 >
-                    // ...
+                    {/* // ...
                     // here loadable content
-                    // for example, async data
-                    //<div>Loadable content</div>
+                    // for example, async data */}
+                    {/* //<div>Loadable content</div> */}
                 </LoadingScreen>
             </div>
         )

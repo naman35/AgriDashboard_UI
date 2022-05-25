@@ -61,21 +61,42 @@ class GenerateCharts extends Component {
                 }
             }
         }
+        
+        
+    var existingEntries = JSON.parse(localStorage.getItem("allEntries"));  
 
+    if (existingEntries.length>=3)
+    {   
+        existingEntries.splice(0,existingEntries.length)
+        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
 
-        console.log("curretn States",this.props.moveToGenChart)
-        // statesForLineChart.push(this.props.moveToGenChart)
-        // console.log(this.state.dataset.result[2].StateName)
-        // if(this.props.moveToGenChart.length <=3)
-        // {
-        //    if(this.props.moveToGenChart.size<=3)
-        //    {
-                this.props.moveToGenChart.forEach(element => {
-                    if (statesForLineChart.length == 3) 
+    }
+    statesForLineChart.forEach(element => {
+        existingEntries.push(element)   
+    });
+    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+    console.log("INTIAL EXI ENTRIES",existingEntries);
+
+        // if (existingEntries.length===3)
+        // {   
+        //     existingEntries.splice(0,existingEntries.length)
+        // }
+        // statesForLineChart.forEach(element => {
+        //     existingEntries.push(element);
+        //     localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+        // });
+
+        this.props.moveToGenChart.forEach(element => {
+                    if (statesForLineChart.length === 3) 
                     {
                         this.props.moveToGenChart.clear();
+                        existingEntries.splice(0,existingEntries.length)
+                        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
                     }
-                statesForLineChart.push(element);
+                    statesForLineChart.push(element);
+                    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+
+
               });
             // }
 
@@ -131,7 +152,6 @@ class GenerateCharts extends Component {
                         let color = this.getRandomColor();
 
 
-                         //this.findValueOfProperty(this.state.colorCoding, obj.StateName)
                         chartColors.push(color)
 
                         labelMap[obj.StateName] = color;
@@ -259,14 +279,26 @@ class GenerateCharts extends Component {
     tableRowStatesHandleClick(event) {
         if(this.state.viewType=='pie') return;
         const id = event.target.id;
-        // console.log(this.props.mapStates);
 
         let presentStates = this.state.statesForLineChart;
         if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
         else {
             if (presentStates.length === 3) presentStates.shift();
+            var existingEntries = JSON.parse(localStorage.getItem("allEntries"));  
+            if (existingEntries.length>=3)
+            {   
+                existingEntries.splice(0,existingEntries.length)
+                localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+
+            }
             presentStates.push(id);
+            presentStates.forEach(element => {
+                existingEntries.push(element)   
+            });
+            localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+            console.log("existing entrie",existingEntries);
         }
+        
         this.setState({
             statesForLineChart: presentStates
         }, () => this.createChart())

@@ -1,5 +1,7 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import { useCallback} from "react";
+import {reactLocalStorage} from 'reactjs-localstorage';
+
 import { useHistory } from "react-router";
 import {ComposableMap, Geographies, Geography} from 'react-simple-maps';
 import {scaleQuantile} from 'd3-scale';
@@ -42,13 +44,17 @@ const geographyStyle = {
         outline: 'none'
     },
     hover: {
-        fill: '#ccc',
-        outline: 'none'
-    },
-    pressed: {
-        outline: 'none',
-        fill: '#960505',
-    }
+        fill: "#607D8B",
+        stroke: "#607D8B",
+        strokeWidth: 0.75,
+        outline: "none"
+      },
+      pressed: {
+        fill: "#960505",
+        stroke: "#607D8B",
+        strokeWidth: 0.75,
+        outline: "none"
+      }
 };
 
 // will generate random heatmap data on every call
@@ -97,19 +103,27 @@ const getHeatMapData = () => {
 
 
 function IndiaMap({...rest}) {
-    // const [mapStates,addI]=useState([]);
-    var mapStates="";
     const history = useHistory();
-    // const {handlePopUpF} = rest;
-    const prevTrigger=false;
-    var changeState = (geo) => {  
+    var mapStates="";
+    const [arr, setArr] = useState([]);
 
-        // console.log("IndiaMap",mapStates)
-        // if (mapStates.length === 3) mapStates.shift();
-        // var mapStates=geo.properties.name
-        // mapStates.push(geo.properties.name);
+/////////////////////
+
+var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
+if(existingEntries == null) existingEntries = [];
+const changeState = (geo) => {  
         
-        if(rest.callTrigger==true)
+
+if (existingEntries.length>=3)
+{   
+    existingEntries.splice(0,existingEntries.length)
+    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+}
+
+        existingEntries.push(geo.properties.name);
+        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+
+        if(rest.callTrigger===true)
         {
             history.push({
             pathname: "/",
@@ -119,10 +133,16 @@ function IndiaMap({...rest}) {
         }
     
     }
-    console.log("we here",rest.callTrigger);
+    console.log("ASASASA",existingEntries)
+    var [clickedCity1, setClickedCity1] = useState(existingEntries[0]);
+    var [clickedCity2, setClickedCity2] = useState(existingEntries[1]);
+    var [clickedCity3, setClickedCity3] = useState(existingEntries[2]);
+    
 
-    // prevTrigger = rest.callTrigger
-   
+
+
+    const [color, setColor] = useState("#ECEFF1");
+
     const [tooltipContent, setTooltipContent] = useState('');
     const [data, setData] = useState(getHeatMapData());
 
@@ -132,7 +152,18 @@ function IndiaMap({...rest}) {
         min: 0,
         max: data.reduce((max, item) => (item.value > max ? item.value : max), 0)
     };
-
+    function getRandomColor() {
+        var letters = "0123456789ABCDEF";
+        var color = "#";
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      }
+    const handleColorChange = () => {
+        console.log("Changing Color");
+        setColor(getRandomColor());
+      };
 
 
     const colorScale = scaleQuantile()
@@ -167,19 +198,34 @@ function IndiaMap({...rest}) {
                 data-tip=""
             >
                             
-                <Geographies geography={INDIA_TOPO_JSON}>
+                <Geographies 
+                geography={INDIA_TOPO_JSON}
+                disableoptimization={true}>
                     {({geographies}) =>
                         geographies.map(geo => {
+                            const isClicked1 = clickedCity1 === geo.properties.name;
+                            const isClicked2 = clickedCity2 === geo.properties.name;
+                            const isClicked3 = clickedCity3 === geo.properties.name;
                             const current = data.find(s => s.id === geo.id);
-
+                            // const new_cur =
+                            // typeof current === "object" ? current.id : "";
+                            // const cur_selection = selected === new_cur && new_cur;
                             return (//TODO
                             
                             <Geography
                             
                                     key={geo.rsmKey}
                                     geography={geo}
-                                    onClick={() => changeState(geo)}
-                                    fill={current ? colorScale(current.value) : DEFAULT_COLOR}
+                                    onClick={() => {
+                                        // setSelected(new_cur);
+                                        changeState(geo);
+                                        arr.push(geo.id);
+                                    }}
+                                    fill={isClicked1 ?"red": isClicked2?"red":isClicked3 ?"red": "blue"}
+
+                                    // fill={current? "red" : "blue"}
+
+                                    // fill={cur_selection? "#7FE5F0": current? colorScale(current.value) : DEFAULT_COLOR}
                                     style={geographyStyle}
                                 />
             

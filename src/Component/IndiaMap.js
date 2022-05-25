@@ -112,16 +112,16 @@ function IndiaMap({...rest}) {
 var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
 if(existingEntries == null) existingEntries = [];
 const changeState = (geo) => {  
-        
+    var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
+if(existingEntries == null) existingEntries = [];
+// if (existingEntries.length>=3)
+// {   
+//     existingEntries.splice(0,existingEntries.length)
 
-if (existingEntries.length>=3)
-{   
-    existingEntries.splice(0,existingEntries.length)
-    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-}
+// }
 
-        existingEntries.push(geo.properties.name);
-        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+//         existingEntries.push(geo.properties.name);
+//         localStorage.setItem("allEntries", JSON.stringify(existingEntries));
 
         if(rest.callTrigger===true)
         {
@@ -131,7 +131,7 @@ if (existingEntries.length>=3)
             
             });
         }
-    
+        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
     }
     console.log("ASASASA",existingEntries)
     var [clickedCity1, setClickedCity1] = useState(existingEntries[0]);
@@ -207,9 +207,7 @@ if (existingEntries.length>=3)
                             const isClicked2 = clickedCity2 === geo.properties.name;
                             const isClicked3 = clickedCity3 === geo.properties.name;
                             const current = data.find(s => s.id === geo.id);
-                            // const new_cur =
-                            // typeof current === "object" ? current.id : "";
-                            // const cur_selection = selected === new_cur && new_cur;
+
                             return (//TODO
                             
                             <Geography
@@ -222,10 +220,6 @@ if (existingEntries.length>=3)
                                         arr.push(geo.id);
                                     }}
                                     fill={isClicked1 ?"red": isClicked2?"red":isClicked3 ?"red": "blue"}
-
-                                    // fill={current? "red" : "blue"}
-
-                                    // fill={cur_selection? "#7FE5F0": current? colorScale(current.value) : DEFAULT_COLOR}
                                     style={geographyStyle}
                                 />
             

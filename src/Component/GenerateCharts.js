@@ -63,38 +63,22 @@ class GenerateCharts extends Component {
         }
         
         
-    var existingEntries = JSON.parse(localStorage.getItem("allEntries"));  
 
-    if (existingEntries.length>=3)
-    {   
-        existingEntries.splice(0,existingEntries.length)
-        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-
-    }
-    statesForLineChart.forEach(element => {
-        existingEntries.push(element)   
+    this.state.statesForLineChart.forEach(element => {
+        this.props.moveToGenChart.add(element)   
     });
-    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-    console.log("INTIAL EXI ENTRIES",existingEntries);
 
-        // if (existingEntries.length===3)
-        // {   
-        //     existingEntries.splice(0,existingEntries.length)
-        // }
-        // statesForLineChart.forEach(element => {
-        //     existingEntries.push(element);
-        //     localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-        // });
-
-        this.props.moveToGenChart.forEach(element => {
+    var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
+    if(existingEntries == null) existingEntries = [];
+    this.props.moveToGenChart.forEach(element => {
                     if (statesForLineChart.length === 3) 
                     {
                         this.props.moveToGenChart.clear();
-                        existingEntries.splice(0,existingEntries.length)
-                        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+                        statesForLineChart.shift();
+                        // existingEntries.splice(0,existingEntries.length)
+                        // localStorage.setItem("allEntries", JSON.stringify(existingEntries));
                     }
                     statesForLineChart.push(element);
-                    localStorage.setItem("allEntries", JSON.stringify(existingEntries));
 
 
               });
@@ -108,6 +92,9 @@ class GenerateCharts extends Component {
             },
             () => this.createChart()
         )
+
+        existingEntries=this.state.statesForLineChart;
+        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
     }
 
     findValueOfProperty(obj, propertyName) {
@@ -277,28 +264,33 @@ class GenerateCharts extends Component {
     }
 //////////////////////////HERE
     tableRowStatesHandleClick(event) {
-        if(this.state.viewType=='pie') return;
+        if(this.state.viewType==='pie') return;
         const id = event.target.id;
+        var existingEntries = JSON.parse(localStorage.getItem("allEntries"));
 
         let presentStates = this.state.statesForLineChart;
         if (presentStates.includes(id)) presentStates.splice(presentStates.indexOf(id), 1);
         else {
             if (presentStates.length === 3) presentStates.shift();
-            var existingEntries = JSON.parse(localStorage.getItem("allEntries"));  
+  
             if (existingEntries.length>=3)
             {   
                 existingEntries.splice(0,existingEntries.length)
                 localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-
             }
+
+            // }
             presentStates.push(id);
-            presentStates.forEach(element => {
-                existingEntries.push(element)   
-            });
-            localStorage.setItem("allEntries", JSON.stringify(existingEntries));
-            console.log("existing entrie",existingEntries);
+            if(presentStates.length>3)
+            {
+                presentStates=[];
+            }
+
         }
-        
+        console.log("damn",presentStates)
+        existingEntries=presentStates;
+        localStorage.setItem("allEntries", JSON.stringify(existingEntries));
+
         this.setState({
             statesForLineChart: presentStates
         }, () => this.createChart())
